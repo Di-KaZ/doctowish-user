@@ -8,7 +8,11 @@ module.exports = {
 		require('path').join(require.resolve('@skeletonlabs/skeleton'), '../**/*.{html,js,svelte,ts}')
 	],
 	theme: {
-		extend: {}
+		extend: {
+			fontFamily: {
+				kala: ['Kala', 'sans-serif']
+			}
+		}
 	},
 	plugins: [
 		require('@tailwindcss/forms'),

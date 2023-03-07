@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { getUserApointments, supabase } from '$lib/supabase';
-	import { ProgressRadial } from '@skeletonlabs/skeleton';
-
-	let user = supabase.auth.getUser();
+	import { goto } from '$app/navigation';
+	import { getUserApointments, storeCurrentUser } from '$lib/supabase';
+	import Appointment from '$lib/components/Appointment.svelte';
 </script>
 
 <svelte:head>
@@ -10,29 +9,25 @@
 	<meta name="description" content="Svelte demo app" />
 </svelte:head>
 
-{#await user}
-	<ProgressRadial class="w-12" />
-{:then { data: { user }, error }}
-	<div class="card">
-		{#if !user}
-			<h1>Not logged in</h1>
-		{:else}
-			{#await getUserApointments()}
-				<ProgressRadial class="w-12" />
-			{:then data}
-				{#if !data}
-					<h1>No appointments</h1>
-				{:else}
-					<h1>Appointments</h1>
-					{#each data as appointment}
-						<div class="card">
-							<h1>{appointment.name}</h1>
-							<p>{appointment.date}</p>
-							<p>{`${appointment.doctor.name} ${appointment.doctor.firstName}`}</p>
-						</div>
-					{/each}
-				{/if}
-			{/await}
-		{/if}
+{#if $storeCurrentUser === null}
+	<div class="w-full h-full flex flex-col items-center justify-center">
+		<h1>Vous n'etes pas connecté</h1>
+		<button on:click={() => goto('/profile')}>Se connecter</button>
 	</div>
-{/await}
+{/if}
+
+{#if $storeCurrentUser !== null}
+	<div class="m-4">
+		<h1>Bienvenue {$storeCurrentUser.data.firstName}</h1>
+		{#await getUserApointments()}
+			<Appointment appointment={null} />
+			<Appointment appointment={null} />
+			<Appointment appointment={null} />
+			<Appointment appointment={null} />
+		{:then appointments}
+			{#each appointments as appointment}
+				<Appointment {appointment} />
+			{/each}
+		{/await}
+	</div>
+{/if}

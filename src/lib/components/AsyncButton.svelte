@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 	export let onClick: () => Promise<void>;
-	let promise: Promise<void> | null = new Promise(() => {});
+	let promise: Promise<void> | null;
 
 	async function internalClick(): Promise<void> {
 		promise = onClick();
@@ -10,9 +10,14 @@
 	}
 </script>
 
-<button class="{$$restProps.class} || ''" on:click={internalClick}>
+<button class={$$restProps.class} on:click={internalClick}>
 	{#if promise}
-		<ProgressRadial class="w-5 mr-4" track="stroke-surface-800/30" />
+		<ProgressRadial
+			class="w-7 h-full mr-4"
+			meter="stroke-primary-900 dark:stroke-primary-50"
+			track="stroke-transparent-500/30"
+			stroke={90}
+		/>
 	{/if}
 	<slot />
 </button>

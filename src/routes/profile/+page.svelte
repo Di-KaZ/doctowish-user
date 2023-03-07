@@ -3,7 +3,7 @@
 	import { Avatar, ProgressRadial, Tab, TabGroup } from '@skeletonlabs/skeleton';
 	import AsyncButton from '$lib/components/AsyncButton.svelte';
 
-	let error: string | null;
+	// supabase.auth.signOut();
 	let email: string = '';
 	let password: string = '';
 	let passwordBis: string = '';
@@ -12,15 +12,15 @@
 	let tab = 0;
 
 	async function login() {
-		error = await loginUser(email, password);
+		await loginUser(email, password);
 	}
 
 	async function register() {
-		error = await createUser(email, password, name, firstName);
+		await createUser(email, password, name, firstName);
 	}
 
 	async function logout() {
-		error = await logoutUser();
+		await logoutUser();
 	}
 </script>
 
@@ -52,7 +52,11 @@
 					type="password"
 					bind:value={password}
 				/>
-				<AsyncButton class="btn variant-filled-primary col-span-2" onClick={login}>
+				<AsyncButton
+					class="btn variant-filled-primary col-span-2"
+					onClick={login}
+					disabled={password === '' || email === ''}
+				>
 					Connection
 				</AsyncButton>
 			{/if}
@@ -78,7 +82,15 @@
 					type="password"
 					bind:value={passwordBis}
 				/>
-				<AsyncButton class="btn variant-filled-secondary col-span-2" onClick={register}>
+				<AsyncButton
+					class="btn variant-filled-secondary col-span-2"
+					onClick={register}
+					disabled={password !== passwordBis ||
+						password.length < 8 ||
+						email.length < 8 ||
+						name.length < 2 ||
+						firstName.length < 2}
+				>
 					Rejoindre
 				</AsyncButton>
 			{/if}

@@ -5,6 +5,14 @@ import type { Database } from '$lib/types/supabase';
 export const supabase = createClient<Database>(PUBLIC_SUPABASE_API_URL, PUBLIC_SUPABASE_KEY);
 import { toastStore } from '@skeletonlabs/skeleton';
 
+function showMessage(message: string) {
+	toastStore.trigger({
+		message,
+		autohide: true,
+		timeout: 5000
+	});
+}
+
 // contains the current user
 // prevent multiple requests to the server
 export const storeCurrentUser = writable<{
@@ -12,12 +20,7 @@ export const storeCurrentUser = writable<{
 	data: Database['public']['Tables']['user_info']['Row'];
 } | null>(null);
 
-export async function createUser(
-	email: string,
-	password: string,
-	name: string,
-	firstNamme: string
-): Promise<string | null> {
+export async function createUser(email: string, password: string, name: string, firstName: string) {
 	const {
 		data: { user },
 		error
@@ -26,42 +29,42 @@ export async function createUser(
 		password
 	});
 	if (error) {
-		return error.message;
+		showMessage(error.message);
+		return;
 	}
 	const { error: error2 } = await supabase.from('user_info').insert({
 		name,
-		first_name: firstNamme,
+		firstName,
 		user: user?.id
 	});
 	if (error2) {
-		return error2.message;
+		showMessage(error2.message);
+		console.log({ error2 });
+		return;
 	}
 	return fetchCurrentUser();
 }
 
-export async function loginUser(email: string, password: string): Promise<string | null> {
+export async function loginUser(email: string, password: string) {
 	const { error } = await supabase.auth.signInWithPassword({
 		email,
 		password
 	});
 	if (!error) {
-		toastStore.trigger({
-			message: 'Connecté ! 🎉',
-			autohide: true,
-			timeout: 2000
-		});
+		showMessage('Connecté ! 🎉');
 		return null;
 	}
-	return error.message;
+	showMessage(error.message);
 }
 
-export async function logoutUser(): Promise<string | null> {
+export async function logoutUser() {
 	const { error } = await supabase.auth.signOut();
 	if (!error) {
 		storeCurrentUser.set(null);
-		return error;
+		showMessage('Déconnecté ! 🎉');
+		return;
 	}
-	return null;
+	showMessage(error.message);
 }
 
 export async function getUserApointments(): Promise<
@@ -76,14 +79,15 @@ export async function getUserApointments(): Promise<
 		.select('*, doctor (*)')
 		.order('date', { ascending: true });
 	if (error) {
+		showMessage(error.message);
 		return [];
 	}
 	return data as any;
 }
 
-export async function fetchCurrentUser(): Promise<string | null> {
+export async function fetchCurrentUser() {
 	if (get(storeCurrentUser) !== null) {
-		return null;
+		return;
 	}
 	const {
 		data: { user },
@@ -91,17 +95,18 @@ export async function fetchCurrentUser(): Promise<string | null> {
 	} = await supabase.auth.getUser();
 	if (error) {
 		storeCurrentUser.set(null);
-		return error.message;
+		showMessage(error.message);
+		return;
 	}
 	// get the user info of the current user logged in
 	const { data } = await supabase.from('user_info').select('*').eq('user', user?.id).single();
 	if (error) {
 		storeCurrentUser.set(null);
-		return error;
+		showMessage(error);
+		return;
 	}
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	storeCurrentUser.set({ data: data!, user: user! });
-	return null;
 }
 
 // fetchDoctors
@@ -109,6 +114,7 @@ export async function fetchCurrentUser(): Promise<string | null> {
 export async function fetchDoctors() {
 	const { data, error } = await supabase.from('user_info').select('*').eq('type', 'doctor');
 	if (error) {
+		showMessage(error.message);
 		return [];
 	}
 	return data;
@@ -120,6 +126,7 @@ export async function fetchDoctorById(
 ): Promise<Database['public']['Tables']['user_info']['Row'] | null> {
 	const { data, error } = await supabase.from('user_info').select('*').eq('id', id).single();
 	if (error) {
+		showMessage(error.message);
 		return null;
 	}
 	return data;
@@ -140,12 +147,6 @@ export async function createAppointment(doctor: number, date: string, name: stri
 		date
 	});
 	if (error) {
-		toastStore.trigger({
-			message: error.message,
-			autohide: true,
-			timeout: 2000
-		});
-		return error.message;
+		showMessage(error.message);
 	}
-	return null;
 }

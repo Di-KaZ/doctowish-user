@@ -5,6 +5,7 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		SvelteKitPWA({
+			outDir: '.svelte-kit/output/client',
 			registerType: 'autoUpdate',
 			manifest: {
 				theme_color: '#35def6',

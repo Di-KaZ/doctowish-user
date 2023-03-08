@@ -6,7 +6,7 @@
 </script>
 
 <div class="w-full h-full">
-	<div class="flex items-center flex-col m-4 space-y-4">
+	<div class="grid grid-cols-1 lg:grid-cols-2 m-4 gap-4">
 		{#await fetchDoctors()}
 			<Doctor doctor={null} />
 			<Doctor doctor={null} />

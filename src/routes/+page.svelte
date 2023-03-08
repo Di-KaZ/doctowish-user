@@ -12,13 +12,15 @@
 {#if $storeCurrentUser === null}
 	<div class="w-full h-full flex flex-col items-center justify-center">
 		<h1>Vous n'etes pas connecté</h1>
-		<button on:click={() => goto('/profile')}>Se connecter</button>
+		<button on:click={() => goto('/profile')} class="btn variant-filled-tertiary">
+			Se connecter
+		</button>
 	</div>
 {/if}
 
 {#if $storeCurrentUser !== null}
-	<div class="m-4">
-		<h1>Bienvenue {$storeCurrentUser.data.firstName}</h1>
+	<h1 class="m-4">Bienvenue {$storeCurrentUser.data.firstName}</h1>
+	<div class="grid grid-cols-1 lg:grid-cols-2">
 		{#await getUserApointments()}
 			<Appointment appointment={null} />
 			<Appointment appointment={null} />

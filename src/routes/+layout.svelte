@@ -63,8 +63,30 @@
 				<AppRail selected={writable(1)}>
 					<svelte:fragment slot="lead">
 						<!-- AppRailTiles -->
-						<LightSwitch />
+						<div class="hidden">
+							<LightSwitch />
+						</div>
 					</svelte:fragment>
+					<div class="flex flex-col h-full">
+						<button
+							on:click={() => (tab = 0)}
+							class={`flex-1 ${tab === 0 ? 'variant-filled-primary' : ''}`}
+						>
+							<div class="flex items-center justify-center"><Home size="40" /></div>
+						</button>
+						<button
+							on:click={() => (tab = 1)}
+							class={`flex-1 ${tab === 1 ? 'variant-filled-primary' : ''}`}
+						>
+							<div class="flex items-center justify-center"><Calendar size="40" /></div>
+						</button>
+						<button
+							on:click={() => (tab = 2)}
+							class={`flex-1 ${tab === 2 ? 'variant-filled-primary' : ''}`}
+						>
+							<div class="flex items-center justify-center"><User size="40" /></div>
+						</button>
+					</div>
 					<!-- AppRailTiles -->
 					<svelte:fragment slot="trail">
 						<!-- AppRailTiles -->

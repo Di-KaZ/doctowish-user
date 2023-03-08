@@ -31,7 +31,7 @@
 
 <div class="w-full h-full flex items-center justify-center">
 	{#if $storeCurrentUser === null}
-		<div class="grid grid-cols-2 gap-4 mx-4 w-full">
+		<div class="grid grid-cols-2 gap-4 mx-4 w-full lg:max-w-xl">
 			<div class="col-span-2 my-4">
 				<TabGroup justify="justify-center">
 					<Tab bind:group={tab} name="Connection" value={0}>Connection</Tab>
@@ -96,7 +96,7 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="card grid grid-cols-2 gap-y-4 p-4 w-full m-4">
+		<div class="card grid grid-cols-2 gap-y-4 p-4 w-full m-4 lg:max-w-xl">
 			<div class="col-span-2 place-content-center flex">
 				<Avatar src={`https://api.multiavatar.com/${$storeCurrentUser.user.id}.svg`} width="w-36" />
 			</div>

@@ -7,8 +7,8 @@
 </script>
 
 {#if doctor !== null}
-	<div class="card m-4 p-4 w-full">
-		<header class="flex items-center flex-col ">
+	<div class="card p-4 w-full h-full">
+		<header class="flex items-center flex-col">
 			<Avatar src={`https://api.multiavatar.com/${doctor.user}.svg`} width="w-28" />
 			<h1 class="capitalize">Dr. {doctor.name} {doctor.firstName}</h1>
 			<h4>{doctor.profession}</h4>

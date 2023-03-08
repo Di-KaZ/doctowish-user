@@ -27,7 +27,6 @@
 	import { User, Home, Calendar } from 'svelte-heros-v2';
 	import { Screens } from '$lib/types/screens';
 	import { goto } from '$app/navigation';
-
 	// make tab containing the tab of the current screen
 	let tab = Screens.getScreenFromPath($page.url.pathname)?.tab ?? 0;
 

@@ -28,8 +28,8 @@ specifiers:
   tailwindcss: ^3.1.5
   tslib: ^2.4.1
   typescript: ^4.9.3
-  vite: ^4.0.0
-  vite-plugin-pwa: ^0.14.4
+  vite: 4.1.4
+  vite-plugin-pwa: 0.14.4
 
 dependencies:
   '@supabase/supabase-js': 2.10.0
@@ -376,8 +376,6 @@ packages:
     resolution: {integrity: sha512-URpaIJQwEkEC2T9Kn+Ai6Xe/02iNaVCuT/PtoRz3GPVJVDpPd7mLo+VddTbhCRU9TXqW5mSrQfXZyi8kDKOVpQ==}
     engines: {node: '>=6.0.0'}
     hasBin: true
-    dependencies:
-      '@babel/types': 7.21.2
     dev: true
 
   /@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression/7.18.6_@babel+core@7.21.0:

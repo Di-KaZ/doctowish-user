@@ -5,8 +5,9 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		SvelteKitPWA({
-			outDir: '.svelte-kit/output/pre-rendered',
+			outDir: '.svelte-kit/output/client',
 			registerType: 'autoUpdate',
+			filename: 'service-worker.js',
 			manifest: {
 				theme_color: '#35def6',
 				background_color: '#35def6',

@@ -27,6 +27,8 @@
 	import { User, Home, Calendar } from 'svelte-heros-v2';
 	import { Screens } from '$lib/types/screens';
 	import { goto } from '$app/navigation';
+	import { pwaInfo } from 'virtual:pwa-info';
+
 	// make tab containing the tab of the current screen
 	let tab = Screens.getScreenFromPath($page.url.pathname)?.tab ?? 0;
 
@@ -35,9 +37,27 @@
 		const newTab = Screens.getScreenFromTab(tab);
 		if (!import.meta.env.SSR && newTab) goto(newTab.path);
 	}
-	onMount(() => {
+	onMount(async () => {
 		fetchCurrentUser();
+		if (pwaInfo) {
+			const { registerSW } = await import('virtual:pwa-register');
+			registerSW({
+				immediate: true,
+				onRegistered(r: any) {
+					// uncomment following code if you want check for updates
+					// r && setInterval(() => {
+					//    console.log('Checking for sw update')
+					//    r.update()
+					// }, 20000 /* 20s for testing purposes */)
+					console.log(`SW Registered: ${r}`);
+				},
+				onRegisterError(error: any) {
+					console.log('SW registration error', error);
+				}
+			});
+		}
 	});
+	$: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 </script>
 
 <main class="w-screen h-screen">

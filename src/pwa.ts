@@ -36,14 +36,13 @@ export function preventAutoInstallPrompt() {
 		e.preventDefault();
 		storeInstallPropmt.set(e);
 		toastStore.trigger({
-			message: 'You can install this app on your device',
+			message: 'Installez DoctoWish pour une meilleure expérience !',
 			background: 'variant-filled-secondary',
 			autohide: false,
 			action: {
 				label: 'Installer',
 				response: _openInstallPrompt
-			},
-			butonDissmissLabel: 'Fermer'
+			}
 		});
 	});
 }

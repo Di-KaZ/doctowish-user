@@ -48,15 +48,30 @@ export async function createUser(email: string, password: string, name: string, 
 }
 
 export async function loginUser(email: string, password: string) {
-	const { error } = await supabase.auth.signInWithPassword({
+	const {
+		data: { user },
+		error
+	} = await supabase.auth.signInWithPassword({
 		email,
 		password
 	});
-	if (!error) {
-		showMessage('Connecté ! 🎉');
+
+	if (error) {
+		showMessage(error.message);
 		return null;
 	}
-	showMessage(error.message);
+
+	const { error: error2 } = await supabase
+		.from('user_info')
+		.select('type')
+		.eq('user', user?.id)
+		.eq('type', 'patient')
+		.single();
+	if (error2) {
+		showMessage("vous n'êtes pas un patient");
+		return null;
+	}
+	showMessage('Connecté ! 🎉');
 }
 
 export async function logoutUser() {

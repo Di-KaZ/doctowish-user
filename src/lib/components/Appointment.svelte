@@ -1,7 +1,8 @@
 <script lang="ts">
 	import type { Database } from '$lib/types/supabase';
 	import { Avatar } from '@skeletonlabs/skeleton';
-
+	import { Bell } from 'svelte-heros-v2';
+	import { addToCalendar } from '../../pwa';
 	export let appointment:
 		| (Database['public']['Tables']['appointment']['Row'] & {
 				doctor: Database['public']['Tables']['user_info']['Row'];
@@ -13,8 +14,11 @@
 
 {#if appointment}
 	<div class="card p-4 m-4">
-		<header>
+		<header class="flex items-center justify-between">
 			<h1 class="font-bold capitalize">{appointment.name}</h1>
+			<button class="btn variant-filled-primary" on:click={() => addToCalendar(appointment)}>
+				<Bell /> <span> calendirer </span>
+			</button>
 		</header>
 		<div>
 			<h6>

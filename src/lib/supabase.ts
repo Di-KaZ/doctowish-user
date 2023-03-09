@@ -44,7 +44,7 @@ export async function createUser(email: string, password: string, name: string, 
 		console.log({ error2 });
 		return;
 	}
-	return fetchCurrentUser();
+	fetchCurrentUser();
 }
 
 export async function loginUser(email: string, password: string) {
@@ -72,6 +72,7 @@ export async function loginUser(email: string, password: string) {
 		return null;
 	}
 	showMessage('Connecté ! 🎉');
+	fetchCurrentUser();
 }
 
 export async function logoutUser() {
@@ -82,6 +83,7 @@ export async function logoutUser() {
 		return;
 	}
 	showMessage(error.message);
+	fetchCurrentUser();
 }
 
 export async function getUserApointments(): Promise<

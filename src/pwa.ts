@@ -1,6 +1,7 @@
+import type { Database } from '$lib/types/supabase';
 import { toastStore } from '@skeletonlabs/skeleton';
 import { writable } from 'svelte/store';
-
+import * as ics from 'ics';
 export function vibrate() {
 	navigator.vibrate(200);
 }
@@ -45,4 +46,31 @@ export function preventAutoInstallPrompt() {
 			}
 		});
 	});
+}
+
+export function addToCalendar(
+	event: Database['public']['Tables']['appointment']['Row'] & {
+		doctor: Database['public']['Tables']['user_info']['Row'];
+	}
+) {
+	const date = new Date(event.date!);
+	ics.createEvent(
+		{
+			title: `Rendez-vous avec ${event.doctor.name} ${event.doctor.firstName}`,
+			start: [
+				date.getFullYear(),
+				date.getMonth(),
+				date.getDate(),
+				date.getHours(),
+				date.getMinutes()
+			],
+			duration: { minutes: 30 },
+			description: event.name!
+		},
+		(error, value) => {
+			const blob = new Blob([value], { type: 'text/calendar;charset=utf-8' });
+			const url = URL.createObjectURL(blob);
+			window.location.assign(url);
+		}
+	);
 }

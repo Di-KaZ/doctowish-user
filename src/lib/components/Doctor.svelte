@@ -26,7 +26,7 @@
 {/if}
 
 {#if doctor === null}
-	<div class="card m-4 p-4 w-full">
+	<div class="card p-4 w-full">
 		<header class="flex items-center flex-col">
 			<div class="placeholder-circle w-28 h-28 animate-pulse" />
 			<div class="placeholder animate-pulse w-full h-7 mt-4" />

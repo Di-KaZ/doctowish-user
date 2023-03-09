@@ -4,8 +4,10 @@ import { get, writable } from 'svelte/store';
 import type { Database } from '$lib/types/supabase';
 export const supabase = createClient<Database>(PUBLIC_SUPABASE_API_URL, PUBLIC_SUPABASE_KEY);
 import { toastStore } from '@skeletonlabs/skeleton';
+import { vibrate } from '../pwa';
 
 export function showMessage(message: string) {
+	vibrate();
 	toastStore.trigger({
 		message,
 		autohide: true,

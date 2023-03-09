@@ -61,7 +61,7 @@
 				</AsyncButton>
 			{/if}
 			{#if tab === 1}
-				<h1 class="text-center col-span-2 font-kala-important">Rejoidnre</h1>
+				<h1 class="text-center col-span-2 font-kala-important">Rejoindre</h1>
 				<input class="input p-2" placeholder="Nom" type="text" bind:value={name} />
 				<input class="input p-2" placeholder="Prénom" type="text" bind:value={firstName} />
 				<input

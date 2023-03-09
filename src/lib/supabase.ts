@@ -5,7 +5,7 @@ import type { Database } from '$lib/types/supabase';
 export const supabase = createClient<Database>(PUBLIC_SUPABASE_API_URL, PUBLIC_SUPABASE_KEY);
 import { toastStore } from '@skeletonlabs/skeleton';
 
-function showMessage(message: string) {
+export function showMessage(message: string) {
 	toastStore.trigger({
 		message,
 		autohide: true,

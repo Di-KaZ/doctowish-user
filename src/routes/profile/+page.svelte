@@ -2,6 +2,12 @@
 	import { createUser, loginUser, supabase, logoutUser, storeCurrentUser } from '$lib/supabase';
 	import { Avatar, ProgressRadial, Tab, TabGroup } from '@skeletonlabs/skeleton';
 	import AsyncButton from '$lib/components/AsyncButton.svelte';
+	import { onMount } from 'svelte';
+	import {
+		listenDeviceOrientation,
+		stopListenDeviceOrientation,
+		deviceOrientation
+	} from '../../pwa';
 
 	// supabase.auth.signOut();
 	let email: string = '';
@@ -22,6 +28,15 @@
 	async function logout() {
 		await logoutUser();
 	}
+
+	onMount(() => {
+		console.log('onMount');
+		listenDeviceOrientation();
+		return () => {
+			console.log('onDestroy');
+			stopListenDeviceOrientation();
+		};
+	});
 </script>
 
 <svelte:head>
@@ -96,7 +111,12 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="card grid grid-cols-2 gap-y-4 p-4 w-full m-4 lg:max-w-xl">
+		<div
+			class="card grid grid-cols-2 gap-y-4 p-4 w-full m-4 lg:max-w-xl"
+			style={`transform: rotate(${
+				0.98 * ($deviceOrientation?.alpha ?? 0) + 0.02 * ($deviceOrientation?.beta ?? 0)
+			}deg);`}
+		>
 			<div class="col-span-2 place-content-center flex">
 				<Avatar src={`https://api.multiavatar.com/${$storeCurrentUser.user.id}.svg`} width="w-36" />
 			</div>

@@ -74,3 +74,24 @@ export function addToCalendar(
 		}
 	);
 }
+
+export const deviceOrientation = writable<{ alpha: number; beta: number; gamma: number } | null>(
+	null
+);
+
+function _updateOrientation(event: DeviceOrientationEvent) {
+	deviceOrientation.set({
+		alpha: event.alpha ?? 0,
+		beta: event.beta ?? 0,
+		gamma: event.gamma ?? 0
+	});
+}
+
+export function listenDeviceOrientation() {
+	console.log('listenDeviceOrientation');
+	window.addEventListener('deviceorientation', _updateOrientation, true);
+}
+
+export function stopListenDeviceOrientation() {
+	window.removeEventListener('deviceorientation', _updateOrientation);
+}

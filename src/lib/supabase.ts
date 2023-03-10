@@ -37,7 +37,8 @@ export async function createUser(email: string, password: string, name: string, 
 	const { error: error2 } = await supabase.from('user_info').insert({
 		name,
 		firstName,
-		user: user?.id
+		user: user?.id,
+		email
 	});
 	if (error2) {
 		showMessage(error2.message);
